@@ -66,7 +66,7 @@ ssh mark@my-server.example.com
                            ▼
                   ┌─────────────────┐
                   │ 7. Channel Open │
-                  │ You get a shell ;│
+                  │ You get a shell │
                   └─────────────────┘
 ```
 
@@ -120,7 +120,28 @@ The resolution process:
 
 ## Step 3: TCP Three-Way Handshake
 
-**What happens**: Now that your machine knows the IP address, it initiates a TCP connection to `203.0.113.42` on port `22`. TCP is the transport protocol that provides reliable, ordered delivery of data. Before any SSH data flows, the two machines must establish a TCP connection:
+### First, what is TCP?
+
+**TCP** (Transmission Control Protocol) is how two computers establish a reliable, ordered stream of bytes between each other. It lives one layer below whatever application is talking — SSH, HTTP, Postgres, Kafka, your Spark cluster. They all sit on top of TCP.
+
+Why TCP exists, in four properties:
+
+1. **Connection-oriented** -- both sides shake hands before any data flows, so there's an explicit "the connection is open" state and an explicit "it closed."
+2. **Reliable** -- if a packet is dropped in transit, TCP re-sends it. The application never sees the loss.
+3. **Ordered** -- bytes arrive in the same order they were sent, even if the underlying packets took different paths across the internet.
+4. **Flow- and congestion-controlled** -- TCP slows itself down if the network or the receiver can't keep up.
+
+The trade-off is latency: you pay for a handshake up front, and each byte waits its turn. The alternative, **UDP** (User Datagram Protocol), skips the handshake and the re-sends — "just throw the packet and hope it arrives" — which is why it's used for video calls, DNS queries, and gaming, where speed matters more than perfect delivery.
+
+**Analogy**: TCP is a phone call -- you dial, the other side picks up, and then you speak knowing every word lands in order. UDP is a postcard -- you drop it in the mailbox and move on. Most of what you do as a data engineer is TCP under the covers: SQL queries, SSH, HTTPS, Kafka, gRPC.
+
+**Ports**: TCP also introduces the concept of a **port** — a 16-bit number that lets one machine run many services at once. SSH lives on port 22, HTTPS on 443, Postgres on 5432. We cover ports in detail in Module 04.
+
+Deep dive with the full packet format in [Module 08 — TCP/IP Stack](../08-tcp-ip-stack/).
+
+### Back to the handshake
+
+**What happens**: Now that your machine knows the IP address, it initiates a TCP connection to `203.0.113.42` on port `22`. Before any SSH data flows, the two machines must establish a TCP connection using the three-way handshake:
 
 ```text
 Your Mac                      Server
