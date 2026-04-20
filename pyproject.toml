@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "net-learn"
+version = "0.1.0"
+description = "Interactive CLI for the Networking 101 guide."
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+    "pytest>=8.0",
+    "typer>=0.12",
+    "rich>=13.0",
+    "markdown>=3.5",
+]
+
+[project.scripts]
+net-learn = "cli.main:app"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cli*", "verifier*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

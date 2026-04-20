@@ -1,0 +1,136 @@
+stages:
+  - id: "m00"
+    title: "Module 00 — The Big Picture"
+    items:
+      - id: "00_overview"
+        type: lesson
+        file: 00-the-big-picture/README.md
+
+      - id: "00_parse_ssh_command"
+        type: exercise
+        lesson: lessons/m00/01_parse_ssh_command.md
+        exercise: exercises/m00/parse_ssh_command.py
+        original: originals/m00/parse_ssh_command.py
+        test: tests/m00/test_parse_ssh_command.py
+        hints: hints/m00/parse_ssh_command.md
+        verifier: local
+
+      - id: "00_dns_resolve"
+        type: exercise
+        lesson: lessons/m00/02_dns_resolve.md
+        exercise: exercises/m00/dns_resolve.py
+        original: originals/m00/dns_resolve.py
+        test: tests/m00/test_dns_resolve.py
+        hints: hints/m00/dns_resolve.md
+        verifier: local
+
+  - id: "m01"
+    title: "Module 01 — SSH and Remote Access"
+    items:
+      - id: "01_overview"
+        type: lesson
+        file: 01-ssh-and-remote-access/README.md
+
+      - id: "01_diagnose_ssh_error"
+        type: exercise
+        lesson: lessons/m01/01_diagnose_ssh_error.md
+        exercise: exercises/m01/diagnose_ssh_error.py
+        original: originals/m01/diagnose_ssh_error.py
+        test: tests/m01/test_diagnose_ssh_error.py
+        hints: hints/m01/diagnose_ssh_error.md
+        verifier: local
+
+      - id: "01_tcp_reachability"
+        type: exercise
+        lesson: lessons/m01/02_tcp_reachability.md
+        hints: hints/m01/tcp_reachability.md
+        verifier: command
+        command_checks:
+          - name: "you captured nc output to /tmp/net_probe.txt"
+            command: "test -f /tmp/net_probe.txt"
+            expect_returncode: 0
+          - name: "/tmp/net_probe.txt shows a successful TCP connection"
+            command: "grep -qE '(succeeded|Connected|open|SSH-)' /tmp/net_probe.txt"
+            expect_returncode: 0
+
+  - id: "m02"
+    title: "Module 02 — Shell and Keys"
+    items:
+      - id: "02_overview"
+        type: lesson
+        file: 02-shell-and-keys/README.md
+
+      - id: "02_generate_keypair"
+        type: exercise
+        lesson: lessons/m02/01_generate_keypair.md
+        hints: hints/m02/generate_keypair.md
+        verifier: command
+        command_checks:
+          - name: "public key exists at ~/.ssh/id_ed25519_learn.pub"
+            command: "test -f ~/.ssh/id_ed25519_learn.pub"
+            expect_returncode: 0
+          - name: "private key exists at ~/.ssh/id_ed25519_learn"
+            command: "test -f ~/.ssh/id_ed25519_learn"
+            expect_returncode: 0
+          - name: "private key permission is 600"
+            command: "stat -f '%A' ~/.ssh/id_ed25519_learn"
+            expect_stdout_regex: "^600$"
+          - name: "the key is ed25519 (not RSA)"
+            command: "cat ~/.ssh/id_ed25519_learn.pub"
+            expect_stdout_regex: "^ssh-ed25519 "
+
+      - id: "02_inspect_pubkey"
+        type: exercise
+        lesson: lessons/m02/02_inspect_pubkey.md
+        exercise: exercises/m02/inspect_pubkey.py
+        original: originals/m02/inspect_pubkey.py
+        test: tests/m02/test_inspect_pubkey.py
+        hints: hints/m02/inspect_pubkey.md
+        verifier: local
+
+  - id: "m15"
+    title: "Module 15 — Sockets, HTTP, and WebSockets"
+    items:
+      - id: "15_overview"
+        type: lesson
+        file: 15-sockets-http-websockets/README.md
+
+      - id: "15_parse_url"
+        type: exercise
+        lesson: lessons/m15/01_parse_url.md
+        exercise: exercises/m15/parse_url.py
+        original: originals/m15/parse_url.py
+        test: tests/m15/test_parse_url.py
+        hints: hints/m15/parse_url.md
+        verifier: local
+
+      - id: "15_raw_http_get"
+        type: exercise
+        lesson: lessons/m15/02_raw_http_get.md
+        exercise: exercises/m15/raw_http_get.py
+        original: originals/m15/raw_http_get.py
+        test: tests/m15/test_raw_http_get.py
+        hints: hints/m15/raw_http_get.md
+        verifier: local
+
+      - id: "15_websocket_accept"
+        type: exercise
+        lesson: lessons/m15/03_websocket_accept.md
+        exercise: exercises/m15/websocket_accept.py
+        original: originals/m15/websocket_accept.py
+        test: tests/m15/test_websocket_accept.py
+        hints: hints/m15/websocket_accept.md
+        verifier: local
+
+      - id: "15_live_http_probe"
+        type: exercise
+        lesson: lessons/m15/04_live_http_probe.md
+        hints: hints/m15/live_http_probe.md
+        verifier: command
+        command_checks:
+          - name: "you captured curl status to /tmp/http_probe.txt"
+            command: "test -f /tmp/http_probe.txt"
+            expect_returncode: 0
+          - name: "/tmp/http_probe.txt contains a 2xx or 3xx status code"
+            command: "cat /tmp/http_probe.txt"
+            expect_stdout_regex: "^[23][0-9][0-9]$"

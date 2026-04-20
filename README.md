@@ -64,25 +64,27 @@ The modules build on each other. Here's how they connect:
 
 ```mermaid
 graph TD
-    M00[00 - The Big Picture] --> M01[01 - SSH & Remote Access]
-    M01 --> M02[02 - Shell & Keys]
-    M02 --> M03[03 - IP Addressing & DNS]
-    M03 --> M04[04 - Ports & Services]
-    M04 --> M05[05 - Subnets & Routing]
-    M05 --> M06[06 - Firewalls & NAT]
-    M05 --> M07[07 - LAN, WAN & Network Segments]
-    M06 --> M08[08 - TCP/IP Stack]
+    M00["00 - The Big Picture"] --> M01["01 - SSH & Remote Access"]
+    M01 --> M02["02 - Shell & Keys"]
+    M02 --> M03["03 - IP Addressing & DNS"]
+    M03 --> M04["04 - Ports & Services"]
+    M04 --> M05["05 - Subnets & Routing"]
+    M05 --> M06["06 - Firewalls & NAT"]
+    M05 --> M07["07 - LAN, WAN & Network Segments"]
+    M06 --> M08["08 - TCP/IP Stack"]
     M07 --> M08
-    M08 --> M09[09 - Troubleshooting]
-    M09 --> M10[10 - AWS VPC Fundamentals]
+    M08 --> M09["09 - Troubleshooting"]
+    M09 --> M10["10 - AWS VPC Fundamentals"]
     M05 --> M10
-    M10 --> M11[11 - AWS Subnets & Routing]
-    M11 --> M12[12 - AWS Security Groups & NACLs]
+    M10 --> M11["11 - AWS Subnets & Routing"]
+    M11 --> M12["12 - AWS Security Groups & NACLs"]
     M06 --> M12
-    M12 --> M13[13 - AWS Connectivity]
-    M13 --> M14[14 - AWS Data Eng Networking]
+    M12 --> M13["13 - AWS Connectivity"]
+    M13 --> M14["14 - AWS Data Eng Networking"]
     M11 --> M14
     M12 --> M14
+    M08 --> M15["15 - Sockets, HTTP & WebSockets"]
+    M04 --> M15
 ```
 
 ## Learning Path
@@ -136,6 +138,16 @@ Apply everything you've learned to real AWS infrastructure.
 | [12 - AWS Security Groups and NACLs](12-aws-security-groups-nacls/) | Cloud firewalls | Security Groups (stateful), NACLs (stateless), least-privilege rules for Redshift, RDS, EMR, and Airflow |
 | [13 - AWS Connectivity](13-aws-connectivity/) | Connecting it all | VPC Peering, Transit Gateway, VPC Endpoints (Gateway and Interface), VPN, Direct Connect, and why S3 endpoints save you thousands |
 | [14 - AWS Data Engineering Networking](14-aws-data-eng-networking/) | Capstone | End-to-end network architecture for Redshift, Glue, EMR, Airflow, and RDS -- security groups, endpoints, troubleshooting |
+
+### Phase 6: The Application Layer
+
+Climb above TCP and look at the protocols your code actually speaks.
+
+| Module | Topic | What You'll Learn |
+| ------ | ----- | ----------------- |
+| [15 - Sockets, HTTP, and WebSockets](15-sockets-http-websockets/) | The app layer | The socket API every library hides, HTTP by hand over a raw TCP socket, URL anatomy, the WebSocket upgrade handshake, and `curl` as a debugging tool |
+
+> Module 15 only depends on Modules 04 and 08. If you'd rather build HTTP clients before tackling the AWS chapters, jump here straight from Phase 4.
 
 ## Appendix
 

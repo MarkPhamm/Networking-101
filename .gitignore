@@ -3,6 +3,10 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# net-learn
+progress.txt
+.lesson-cache/
+
 # C extensions
 *.so
 
