@@ -37,11 +37,13 @@ def _find_command_checks(item_path: str) -> list[dict] | None:
 
     for stage in curriculum.get("stages", []):
         for item in stage.get("items", []):
+            if not item.get("command_checks"):
+                continue
             candidate = item.get("exercise") or item.get("lesson") or item.get("file")
             if not candidate:
                 continue
             if (ROOT / candidate).resolve() == resolved:
-                return item.get("command_checks")
+                return item["command_checks"]
 
     return None
 

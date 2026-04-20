@@ -6,6 +6,28 @@ stages:
         type: lesson
         file: 00-the-big-picture/README.md
 
+      - id: "00_knowledge_check"
+        type: exercise
+        lesson: 00-the-big-picture/README.md
+        verifier: quiz
+        questions:
+          - id: dns_step
+            prompt: "Which of the 7 steps (1-7) resolves a hostname into an IP address?"
+            answer: "2"
+            accept: ["step 2", "two"]
+          - id: refused_step
+            prompt: "The error 'Connection refused' means which step failed?"
+            answer: "3"
+            accept: ["step 3", "three", "tcp"]
+          - id: kex_step
+            prompt: "Which step uses Diffie-Hellman to establish a shared secret?"
+            answer: "5"
+            accept: ["step 5", "five", "key exchange", "kex"]
+          - id: ssh_port
+            prompt: "What TCP port does SSH listen on by default?"
+            answer: "22"
+            accept: ["port 22"]
+
       - id: "00_parse_ssh_command"
         type: exercise
         lesson: lessons/m00/01_parse_ssh_command.md
@@ -30,6 +52,28 @@ stages:
       - id: "01_overview"
         type: lesson
         file: 01-ssh-and-remote-access/README.md
+
+      - id: "01_knowledge_check"
+        type: exercise
+        lesson: 01-ssh-and-remote-access/README.md
+        verifier: quiz
+        questions:
+          - id: daemon_name
+            prompt: "What server program listens on port 22 and accepts SSH connections?"
+            answer: "sshd"
+            accept: ["ssh daemon", "ssh-d", "openssh-server"]
+          - id: known_hosts
+            prompt: "What file on your Mac records the host keys of servers you've previously connected to?"
+            answer: "known_hosts"
+            accept: ["~/.ssh/known_hosts", ".ssh/known_hosts"]
+          - id: perm_denied_meaning
+            prompt: "Which part of the SSH connection failed when you see 'Permission denied'?"
+            answer: "authentication"
+            accept: ["auth", "user auth", "step 6", "6"]
+          - id: refused_meaning
+            prompt: "In one word: what's typically wrong when SSH returns 'Connection refused'?"
+            answer: "sshd"
+            accept: ["sshd not running", "not running", "port", "daemon", "nothing listening"]
 
       - id: "01_diagnose_ssh_error"
         type: exercise
@@ -59,6 +103,28 @@ stages:
       - id: "02_overview"
         type: lesson
         file: 02-shell-and-keys/README.md
+
+      - id: "02_knowledge_check"
+        type: exercise
+        lesson: 02-shell-and-keys/README.md
+        verifier: quiz
+        questions:
+          - id: preferred_key_type
+            prompt: "What modern key type should you prefer when generating a new SSH key?"
+            answer: "ed25519"
+            accept: ["ssh-ed25519", "ed-25519"]
+          - id: authorized_keys
+            prompt: "What filename on the server lists public keys allowed to log in as a given user?"
+            answer: "authorized_keys"
+            accept: ["~/.ssh/authorized_keys", ".ssh/authorized_keys"]
+          - id: private_key_mode
+            prompt: "What Unix permission mode (octal) should your SSH private key have?"
+            answer: "600"
+            accept: ["0600"]
+          - id: ssh_config
+            prompt: "What file controls per-host SSH client settings (aliases, identity files, etc.)?"
+            answer: "~/.ssh/config"
+            accept: ["config", ".ssh/config", "ssh config"]
 
       - id: "02_generate_keypair"
         type: exercise
@@ -94,6 +160,28 @@ stages:
       - id: "15_overview"
         type: lesson
         file: 15-sockets-http-websockets/README.md
+
+      - id: "15_knowledge_check"
+        type: exercise
+        lesson: 15-sockets-http-websockets/README.md
+        verifier: quiz
+        questions:
+          - id: https_port
+            prompt: "What is the default TCP port for https?"
+            answer: "443"
+            accept: ["port 443"]
+          - id: server_error_class
+            prompt: "Which HTTP status-code class (1xx-5xx) means 'server error'?"
+            answer: "5xx"
+            accept: ["5", "500", "5**"]
+          - id: header_terminator
+            prompt: "What byte sequence marks the end of the HTTP headers section? (escape codes ok)"
+            answer: "\\r\\n\\r\\n"
+            accept: ["empty line", "blank line", "crlf crlf", "\\r\\n\\r\\n", "double crlf"]
+          - id: ws_magic_guid
+            prompt: "What GUID is appended to the client's key when computing Sec-WebSocket-Accept?"
+            answer: "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+            accept: ["258eafa5-e914-47da-95ca-c5ab0dc85b11"]
 
       - id: "15_parse_url"
         type: exercise

@@ -22,6 +22,7 @@ from cli.state import (
 from verifier.command import CommandVerifier
 from verifier.file import FileVerifier
 from verifier.local import LocalVerifier
+from verifier.quiz import QuizVerifier
 
 
 def _get_verifier(item: CurriculumItem):
@@ -29,6 +30,8 @@ def _get_verifier(item: CurriculumItem):
         return FileVerifier()
     if item.verifier == "command":
         return CommandVerifier()
+    if item.verifier == "quiz":
+        return QuizVerifier()
     return LocalVerifier()
 
 
@@ -61,6 +64,8 @@ def show_item(item: CurriculumItem, state: dict) -> None:
         )
     elif item.type == "exercise" and item.verifier == "command":
         file_hint = "\n[dim]Run the commands from the lesson, then press [bold]v[/] to verify.[/]"
+    elif item.type == "exercise" and item.verifier == "quiz":
+        file_hint = "\n[dim]Knowledge check — press [bold]v[/] to answer the questions.[/]"
 
     console.print()
     console.print(Panel(

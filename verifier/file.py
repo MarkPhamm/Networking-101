@@ -19,11 +19,13 @@ def _find_file_checks(item_path: str) -> dict | None:
 
     for stage in curriculum.get("stages", []):
         for item in stage.get("items", []):
+            if not item.get("file_checks"):
+                continue
             candidate = item.get("exercise") or item.get("lesson") or item.get("file")
             if not candidate:
                 continue
             if (ROOT / candidate).resolve() == resolved:
-                return item.get("file_checks")
+                return item["file_checks"]
 
     return None
 
