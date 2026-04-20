@@ -29,34 +29,47 @@ You don't need to become a network engineer. You need to understand enough to de
 
 ## Quick Start
 
-Every module from 05 onward includes runnable Python exercises that demonstrate concepts with zero setup:
+There are two ways to work through this guide — pick one.
+
+### Option 1 — Interactive CLI (recommended)
+
+`net-learn` is a terminal REPL that opens lessons in your browser, grades your code with `pytest`, runs shell-based checks, and quizzes you on each module. Progress is saved between sessions.
 
 ```bash
-# Pick any module and run the exercises
+# one-time setup — creates a local venv and installs the CLI
+cd Networking-101
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+# launch
+net-learn
+```
+
+Then jump to the [Interactive CLI section](#interactive-cli-net-learn) for the key bindings and subcommands.
+
+### Option 2 — Run the exercise scripts directly
+
+Every module ships a standalone `exercises.py` you can run with no setup:
+
+```bash
 cd 05-subnets-and-routing
-python3 exercises.py
-
-# Or jump straight to cloud networking
-cd 13-aws-connectivity
-python3 exercises.py
-
-# Or design a full data engineering network architecture
-cd 14-aws-data-eng-networking
 python3 exercises.py
 ```
 
-All exercises use Python's standard library only -- no `pip install` needed.
+All scripts use Python's standard library only — no `pip install` needed.
 
 ## How to Use This Guide
 
 1. **Work through modules in order.** Each module builds on the previous one.
 2. **Each module contains up to four files:**
-   - `README.md` -- Core concepts and explanations
-   - `exercises.md` -- Hands-on labs you run on your own machine
-   - `exercises.py` -- Runnable Python exercises that demonstrate concepts (no external dependencies)
-   - `cheatsheet.md` -- Quick reference card for commands and concepts
-3. **Do the exercises.** Reading about networking is like reading about swimming. You have to get in the water.
-4. **Keep a troubleshooting journal.** When you hit an error, write down the error message and what fixed it. This becomes your most valuable reference.
+   - `README.md` — core concepts and explanations
+   - `exercises.md` — hands-on labs you run on your own machine
+   - `exercises.py` — runnable Python exercises that demonstrate concepts (no external dependencies)
+   - `cheatsheet.md` — quick reference card for commands and concepts
+3. **Use `net-learn` for a guided flow.** The CLI gates each module behind a knowledge-check quiz and graded exercises — see the [Interactive CLI section](#interactive-cli-net-learn).
+4. **Do the exercises.** Reading about networking is like reading about swimming. You have to get in the water.
+5. **Keep a troubleshooting journal.** When you hit an error, write down the error message and what fixed it. This becomes your most valuable reference.
 
 ## Module Dependency Graph
 
@@ -148,6 +161,82 @@ Climb above TCP and look at the protocols your code actually speaks.
 | [15 - Sockets, HTTP, and WebSockets](15-sockets-http-websockets/) | The app layer | The socket API every library hides, HTTP by hand over a raw TCP socket, URL anatomy, the WebSocket upgrade handshake, and `curl` as a debugging tool |
 
 > Module 15 only depends on Modules 04 and 08. If you'd rather build HTTP clients before tackling the AWS chapters, jump here straight from Phase 4.
+
+## Interactive CLI (`net-learn`)
+
+`net-learn` turns this repo into a guided REPL: open a lesson, solve a short Python exercise, take a knowledge-check quiz, and move on only after the verifier passes. Progress is saved to `progress.txt` at the repo root.
+
+### Setup
+
+```bash
+cd Networking-101
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+Each new shell session: `source .venv/bin/activate`, then `net-learn`. Or skip activation and call `.venv/bin/net-learn` directly.
+
+### Inside the REPL
+
+When `net-learn` boots it shows a panel with the current item and a prompt like `l:lesson  h:hint  v:verify  n:next  q:quit ?`
+
+| Key | What it does |
+|---|---|
+| `l` | Open the current lesson in your browser (markdown → styled HTML, Mermaid rendered) |
+| `h` | Reveal the next hint — exercises only |
+| `v` | Run the verifier (pytest, shell checks, or on-screen quiz depending on item type) |
+| `n` | Advance to the next item; blocked until the current exercise passes `v` |
+| `q` | Quit. Progress is saved — resume by running `net-learn` again |
+| `x` | Reset the current exercise's scaffold from `originals/` — handy when you want to retry fresh |
+
+For Python-exercise items the panel tells you which file to edit (e.g. `exercises/m00/parse_ssh_command.py`). Open it in your editor, fill in the `# TODO`, save, come back, press `v`.
+
+### Item types and how they're verified
+
+| Type | What you do | What `v` checks |
+|---|---|---|
+| **Lesson** | Read, press `n` | Auto-marks done on advance |
+| **Python exercise** | Edit a scaffold under `exercises/` | Runs `pytest` on the matching test file |
+| **Command exercise** | Run a real shell command (`ssh-keygen`, `curl`, `nc`, ...) yourself | Executes each check in `curriculum.yaml` and matches stdout/returncode |
+| **Quiz** | Answer questions typed in the terminal | Case-insensitive match against `answer` + synonym list |
+
+### Subcommands
+
+```bash
+net-learn           # interactive REPL (no args)
+net-learn list      # print the curriculum with ✅/▶/○ markers per item
+net-learn build     # regenerate lesson HTML in .lesson-cache/ (done automatically on `l`)
+net-learn reset     # wipe progress.txt AND restore every exercise scaffold from originals/
+```
+
+### What's currently in the CLI
+
+| Module | Status |
+|---|---|
+| 00 — The Big Picture | ✅ lesson + knowledge-check quiz + 2 Python exercises |
+| 01 — SSH and Remote Access | ✅ lesson + quiz + 1 Python exercise + 1 command exercise |
+| 02 — Shell and Keys | ✅ lesson + quiz + 1 command exercise + 1 Python exercise |
+| 03–14 | 📖 read the module READMEs + run `python3 exercises.py`; not wired into `net-learn` yet |
+| 15 — Sockets, HTTP & WebSockets | ✅ lesson + quiz + 3 Python exercises + 1 command exercise |
+
+Adding a module is mechanical: author a lesson, scaffold, test, and hints, then append a stage to `curriculum.yaml`. No framework changes needed.
+
+### Files `net-learn` reads and writes
+
+| Path | Role |
+|---|---|
+| `curriculum.yaml` | Single source of truth — stages, items, verifiers, questions |
+| `cli/`, `verifier/` | CLI and verifier code |
+| `lessons/` | Per-exercise lesson markdown (opened on `l`) |
+| `exercises/m*/` | Student-editable Python scaffolds |
+| `originals/m*/` | Pristine copies used by `reset` / `x` |
+| `tests/m*/` | `pytest` files invoked by the local verifier |
+| `hints/m*/` | Markdown with `## Hint 1/2/3` sections, shown on `h` |
+| `progress.txt` | Current item, done list, verified list. Gitignored. |
+| `.lesson-cache/` | Rendered HTML lessons. Gitignored; rebuilt on demand. |
+
+To reset just your position without touching scaffolds: `rm progress.txt`. To reset everything: `net-learn reset`.
 
 ## Appendix
 
