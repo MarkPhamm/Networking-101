@@ -19,8 +19,11 @@ import string
 from pathlib import Path
 
 import yaml
+from rich.console import Console
 
 from .base import BaseVerifier, TestResult, VerifyResult
+
+_console = Console()
 
 ROOT = Path(os.environ.get("NET_LEARN_ROOT", Path(__file__).parent.parent))
 CURRICULUM_PATH = ROOT / "curriculum.yaml"
@@ -88,14 +91,15 @@ class QuizVerifier(BaseVerifier):
                 continue
 
             if _matches(user_answer, answer, accept):
+                _console.print("  [green]✔[/] correct\n")
                 tests.append(TestResult(name=qid, passed=True))
             else:
+                _console.print(f"  [red]✘[/] expected: [bold]{answer}[/]\n")
                 tests.append(TestResult(
                     name=qid,
                     passed=False,
                     message=f"you answered {user_answer.strip()!r}; expected {answer!r}",
                 ))
-            print()
 
         return VerifyResult(
             exercise_path=exercise_path,
