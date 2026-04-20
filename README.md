@@ -182,7 +182,7 @@ Each new shell session: `source .venv/bin/activate`, then `net-learn`. Or skip a
 When `net-learn` boots it shows a panel with the current item and a prompt like `l:lesson  h:hint  v:verify  n:next  q:quit ?`
 
 | Key | What it does |
-|---|---|
+| --- | ------------ |
 | `l` | Open the current lesson in your browser (markdown → styled HTML, Mermaid rendered) |
 | `h` | Reveal the next hint — exercises only |
 | `v` | Run the verifier (pytest, shell checks, or on-screen quiz depending on item type) |
@@ -195,7 +195,7 @@ For Python-exercise items the panel tells you which file to edit (e.g. `exercise
 ### Item types and how they're verified
 
 | Type | What you do | What `v` checks |
-|---|---|---|
+| ---- | ----------- | --------------- |
 | **Lesson** | Read, press `n` | Auto-marks done on advance |
 | **Python exercise** | Edit a scaffold under `exercises/` | Runs `pytest` on the matching test file |
 | **Command exercise** | Run a real shell command (`ssh-keygen`, `curl`, `nc`, ...) yourself | Executes each check in `curriculum.yaml` and matches stdout/returncode |
@@ -213,7 +213,7 @@ net-learn reset     # wipe progress.txt AND restore every exercise scaffold from
 ### What's currently in the CLI
 
 | Module | Status |
-|---|---|
+| ------ | ------ |
 | 00 — The Big Picture | ✅ lesson + knowledge-check quiz + 2 Python exercises |
 | 01 — SSH and Remote Access | ✅ lesson + quiz + 1 Python exercise + 1 command exercise |
 | 02 — Shell and Keys | ✅ lesson + quiz + 1 command exercise + 1 Python exercise |
@@ -225,7 +225,7 @@ Adding a module is mechanical: author a lesson, scaffold, test, and hints, then 
 ### Files `net-learn` reads and writes
 
 | Path | Role |
-|---|---|
+| ---- | ---- |
 | `curriculum.yaml` | Single source of truth — stages, items, verifiers, questions |
 | `cli/`, `verifier/` | CLI and verifier code |
 | `lessons/` | Per-exercise lesson markdown (opened on `l`) |
