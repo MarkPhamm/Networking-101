@@ -66,7 +66,7 @@ ssh mark@my-server.example.com
                            ▼
                   ┌─────────────────┐
                   │ 7. Channel Open │
-                  │ You get a shell │
+                  │ You get a shell ;│
                   └─────────────────┘
 ```
 
